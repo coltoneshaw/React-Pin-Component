@@ -13,7 +13,7 @@ const PinInput = ({
   focus = true,
   disabled = false,
   secret = false,
-  inputMode = undefined,
+  // inputMode = undefined,
   validate,
   inputStyle = {},
   inputFocusStyle = {},
@@ -65,7 +65,7 @@ const PinInput = ({
       secret={secret || false}
       onItemChange={(value) => onItemChange(value, i)}
       type={type}
-      inputMode={inputMode}
+      // inputMode={inputMode}
       validate={validate}
       inputStyle={inputStyle}
       inputFocusStyle={inputFocusStyle}

@@ -1,6 +1,6 @@
 {
   "name": "react-pin-component",
-  "version": "0.1.5",
+  "version": "0.1.4",
   "description": "A simple pin input component for React",
   "main": "dist/bundle.js",
   "types": "@types/react-pin-component.d.ts",

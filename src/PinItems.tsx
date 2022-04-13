@@ -25,7 +25,7 @@ const PinItem = ({
   ariaLabel,
   secret,
   type,
-  inputMode,
+  // inputMode,
   onPaste,
   inputStyle,
   inputFocusStyle,
@@ -77,7 +77,7 @@ const PinItem = ({
       maxLength={1}
       autoComplete="off"
       type={secret ? 'password' : type}
-      inputMode={inputMode}
+      // inputMode={inputMode}
       pattern={type === 'numeric' ? '[0-9]*' : '^[a-zA-Z0-9]+$'}
       onBlur={() => setFocus(false)}
       onPaste={(e) => {

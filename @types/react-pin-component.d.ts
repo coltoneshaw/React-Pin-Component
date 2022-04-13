@@ -8,7 +8,7 @@ declare module "react-pin-component" {
     disabled?: boolean;
     secret?: boolean;
     type?: 'numeric' | 'custom';
-    inputMode?: 'none' | 'search' | 'numeric' | 'text' | 'tel' | 'url' | 'email' | 'decimal' | undefined;
+    // inputMode?: 'none' | 'search' | 'numeric' | 'text' | 'tel' | 'url' | 'email' | 'decimal' | undefined;
   
     // Validate should be a function taking the single digit pin value and returning true/false if it validates.
     validate?: (value: string) => boolean;
