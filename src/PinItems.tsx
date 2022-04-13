@@ -1,53 +1,19 @@
 import {
-  DetailedHTMLProps, InputHTMLAttributes, useState, useEffect,
+  DetailedHTMLProps, InputHTMLAttributes, useState, useEffect, CSSProperties
 } from 'react';
 
 import type { PinItemProps } from "react-pin-component" 
+import { checkAndUpdate } from './utils';
 
-const checkValue = (
-  value: string,
-  debug?: boolean,
-  validate?: (value: string) => boolean,
-  regexCriteria?: RegExp,
-) => {
-  if (String(value).length > 1) {
-    if (debug) console.debug('invalid length of value');
-    return 'invalid';
-  }
-  if (validate) {
-    if (validate(value)) return value;
-    if (debug) console.debug('invalid on validate');
-    return 'invalid';
-  }
-  if (regexCriteria) {
-    if (debug) console.debug('invalid on regex');
-    if (regexCriteria.test(value)) return value;
-    return 'invalid';
-  }
-  return value;
-};
-
-const checkAndUpdate = (
-  value: unknown,
-  setValue: Function,
-  setUpdated: Function,
-  debug?: boolean,
-  validate?: (value: string) => boolean,
-  regexCriteria?: RegExp,
-) => {
-  const check = checkValue(String(value), debug, validate, regexCriteria);
-  if (check === 'invalid') {
-    return;
-  }
-  setValue(value);
-  setUpdated(true);
-};
-const styles = {
-  inputFocus: {
-    outline: 'none',
-    boxShadow: 'none',
-  },
-};
+const defaultStyles = {
+  padding: 0,
+  margin: '0 2px',
+  textAlign: 'center',
+  border: '1px solid black',
+  background: 'transparent',
+  width: '50px',
+  height: '50px',
+} as CSSProperties;
 
 const PinItem = ({
   validate,
@@ -71,6 +37,14 @@ const PinItem = ({
   const [focus, setFocus] = useState(false);
   const [updated, setUpdated] = useState(false);
   const [changeFunction] = useState(() => onItemChange);
+  const [styles, setStyles] = useState<CSSProperties>(() => defaultStyles);
+
+  useEffect(() => {
+    let newStyles = {...defaultStyles};
+    if(inputStyle) Object.assign(newStyles, inputStyle);
+    if(focus) Object.assign(newStyles, inputFocusStyle);
+    setStyles(newStyles);
+  }, [inputStyle, inputFocusStyle, focus])
 
   useEffect(() => {
     if (pinValue.value === value) return;
@@ -111,18 +85,9 @@ const PinItem = ({
         const pasteValue = e.clipboardData.getData('text');
         onPaste(pasteValue);
       }}
+      onFocusCapture={() => setFocus(true)}
       name={`pin-${index}`}
-      style={{
-        padding: 0,
-        margin: '0 2px',
-        textAlign: 'center',
-        border: '1px solid',
-        background: 'transparent',
-        width: '50px',
-        height: '50px',
-        ...inputStyle,
-        ...(focus ? ({ ...styles.inputFocus, ...inputFocusStyle }) : {}),
-      }}
+      style={styles}
       value={value}
     />
   );

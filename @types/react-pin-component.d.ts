@@ -1,6 +1,6 @@
 declare module "react-pin-component" {
   import {
-    CSSProperties, AriaRole,
+    CSSProperties, AriaRole, Component,
   } from 'react';
   
   export interface SharedProps {
@@ -28,7 +28,7 @@ declare module "react-pin-component" {
     style?: CSSProperties;
     focus?: boolean;
     onChange: (pin: string, completed: boolean) => any;
-    // onComplete: (value: string) => any;
+    addSplit?: {component: JSX.Element, every: number}
   }
   
   export interface PinItemProps extends SharedProps {
@@ -40,11 +40,5 @@ declare module "react-pin-component" {
   
   }
 
-  class PinInput extends React.Component<PinInputProps> {
-    clear: () => void;
-    focus: () => void;
-  }
-
-  export default PinInput;
-  
+  export default PinInputProps
 }

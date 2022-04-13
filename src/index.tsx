@@ -4,20 +4,7 @@ import React, {
 import PinItem from './PinItems';
 import type { PinInputProps } from "react-pin-component" 
 
-const fillValues = (length: number, initialValue: number | string) => Array(length)
-  .fill('')
-  .map((x, i) => ({
-    value: initialValue.toString()[i] || '',
-    name: `pin${i}`,
-  }));
-
-const moveFocus = (index: number, direction: 'forward' | 'back') => {
-  let key = index + 1;
-  if (direction === 'back') key = index - 1;
-  // if (key === ) key = length - 1;
-  const nextSibling = document.querySelector(`input[name=pin-${key}]`) as HTMLElement;
-  if (nextSibling !== null) nextSibling?.focus();
-};
+import {fillValues, moveFocus, onBackspace} from './utils'
 
 const PinInput = ({
   length = 6,
@@ -36,10 +23,9 @@ const PinInput = ({
   onChange,
   type = 'numeric',
   debug = false,
+  addSplit,
 }: PinInputProps) => {
   const [values, updateValues] = useState(() => fillValues(length, initialValue ?? ''));
-
-  const onBackspace = (index:number) => moveFocus(index, 'back');
 
   const onPaste = (pasteString: string) => {
     updateValues((prevState) => prevState.map((value, i) => ({
@@ -58,40 +44,64 @@ const PinInput = ({
       if (i === index) return { value, name: v.name };
       return v;
     }));
-    if (value && index < length - 1) moveFocus(index, 'forward');
+    if (value && index < length - 1) moveFocus(index, false);
   };
 
   useEffect(() => {
-    if (focus && length) moveFocus(-1, 'forward');
+    // if focus is enabled this will move the focus to the very first input box. 
+    if (focus && length) moveFocus(-1, false);
   }, [focus, length]);
+
+  
+
+  const valueArray = values.map((e, i) => (
+    <PinItem
+      pinValue={e}
+      length={length}
+      index={i}
+      key={e.name}
+      disabled={disabled}
+      onBackspace={onBackspace}
+      secret={secret || false}
+      onItemChange={(value) => onItemChange(value, i)}
+      type={type}
+      inputMode={inputMode}
+      validate={validate}
+      inputStyle={inputStyle}
+      inputFocusStyle={inputFocusStyle}
+      onPaste={onPaste}
+      regexCriteria={regexCriteria}
+      ariaLabel={ariaLabel}
+      placeholder={placeholder}
+      debug={debug}
+    />
+  ))
+
+  if(addSplit) {
+    const {component, every} = addSplit
+    const length = valueArray.length
+    let insertedAmount = 0;
+    for(let i = every; i < length; i += every) {
+      valueArray.splice(i + insertedAmount, 0, component)
+      insertedAmount++
+      
+    }
+    
+  }
+
 
   return (
     <div
-      style={style}
-      className="pincode-input-container"
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...style
+      }}
+      className="react-pin-component"
     >
-      {values.map((e, i) => (
-        <PinItem
-          pinValue={e}
-          length={length}
-          index={i}
-          key={e.name}
-          disabled={disabled}
-          onBackspace={onBackspace}
-          secret={secret || false}
-          onItemChange={(value) => onItemChange(value, i)}
-          type={type}
-          inputMode={inputMode}
-          validate={validate}
-          inputStyle={inputStyle}
-          inputFocusStyle={inputFocusStyle}
-          onPaste={onPaste}
-          regexCriteria={regexCriteria}
-          ariaLabel={ariaLabel}
-          placeholder={placeholder}
-          debug={debug}
-        />
-      ))}
+      {valueArray }
     </div>
   );
 };

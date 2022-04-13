@@ -1,31 +1,37 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-let entry = './src/index.tsx';
-let output = {
+let production = {
+  entry: './src/index.tsx',
   path: path.join(__dirname, 'dist'),
   publicPath: '/dist/',
-};
-
-if (process.env.NODE_ENV === 'dev') {
-  entry = './example/index.js';
-  output = {
-    path: path.join(__dirname, 'example'),
-    publicPath: '/example/',
-  };
-}
-
-module.exports = {
-  entry,
-  output: Object.assign(output, {
+  output: {
     filename: 'bundle.js',
     library: 'react-sequence',
     libraryTarget: 'umd', // universal module definition
-  }),
-  mode: 'production',
-  devtool: 'source-map',
+  },
   optimization: {
     minimize: true,
   },
+};
+
+const isDev = process.env.NODE_ENV === 'development'
+const devWebpack = {
+  entry: './example/app.tsx',
+    devServer: {
+      // static: {
+      //   directory: path.join(__dirname, 'dist/renderer.js')
+      // },
+      compress: true,
+      port: 9000,
+    },
+    optimization: {
+      minimize: false,
+    },
+}
+
+const commonWebpack = {
+  devtool: 'source-map',
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
@@ -38,4 +44,12 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './example/index.html',
+    }),
+  ],
 };
+
+isDev ? Object.assign(commonWebpack, devWebpack) : Object.assign(commonWebpack, production)
+module.exports = commonWebpack

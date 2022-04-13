@@ -1,5 +1,5 @@
 {
-  "include": ["src", "@types/react-pin-component.d.ts"],
+  "include": ["src", "@types/react-pin-component.d.ts", "example"],
   "compilerOptions": {
     "strict": true,
     "lib": [
