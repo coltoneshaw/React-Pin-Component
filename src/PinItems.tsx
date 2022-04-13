@@ -1,4 +1,4 @@
-import React, {
+import {
   DetailedHTMLProps, InputHTMLAttributes, useState, useEffect,
 } from 'react';
 
@@ -14,7 +14,6 @@ const checkValue = (
     if (debug) console.debug('invalid length of value');
     return 'invalid';
   }
-  // if (typeof value !== 'string' || typeof value !== 'number') return 'invalid';
   if (validate) {
     if (validate(value)) return value;
     if (debug) console.debug('invalid on validate');

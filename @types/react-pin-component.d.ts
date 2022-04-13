@@ -39,5 +39,12 @@ declare module "react-pin-component" {
     onItemChange: (value: string) => void
   
   }
+
+  class PinInput extends React.Component<PinInputProps> {
+    clear: () => void;
+    focus: () => void;
+  }
+
+  export default PinInput;
   
 }
