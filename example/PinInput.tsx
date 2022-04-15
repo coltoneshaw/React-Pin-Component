@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-props-no-multi-spaces */
 import React from 'react';
-import PinComponent from '../src/index';
+import PinComponent from 'react-pin-component';
+
+// import PinComponent from '../src/index';
 
 const MfaTokenInput = () => (
   <PinComponent

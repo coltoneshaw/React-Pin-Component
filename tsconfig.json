@@ -1,5 +1,5 @@
 {
-  "include": ["src", "@types/react-pin-component.d.ts", "example"],
+  "include": ["src", "@types/react-pin-component.d.ts"],
   "compilerOptions": {
     "strict": true,
     "lib": [
@@ -14,5 +14,6 @@
     "moduleResolution": "node",
     "target": "esnext",
     "allowSyntheticDefaultImports": true
-  }
+  },
+  "exclude": ["webpack.config.js"]
 }

@@ -92,4 +92,5 @@ const PinInput = ({
     </div>
   );
 };
+
 export default PinInput;
