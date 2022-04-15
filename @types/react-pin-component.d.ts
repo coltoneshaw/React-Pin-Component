@@ -40,5 +40,9 @@ declare module 'react-pin-component' {
 
   }
 
-  export default PinInputProps;
+  // eslint-disable-next-line react/prefer-stateless-function
+  class PinInput extends React.Component<PinInputProps> { }
+
+  export default PinInput;
+
 }
