@@ -5,10 +5,12 @@ const {merge} = require('webpack-merge');
 let production = {
   mode: "production",
   entry: './src/index.tsx',
+  
   output: {
     filename: 'bundle.js',
-    library: 'react-pin-component',
-    libraryTarget: "commonjs-module",
+    library: 'react-sequence',
+    libraryTarget: "umd",
+    globalObject: 'this'
     },
   optimization: {
     minimize: true,
@@ -27,13 +29,13 @@ let production = {
 const isDev = process.env.NODE_ENV === 'development';
 
 const devWebpack = {
-  mode: "production",
+  mode: "development",
   entry: './example/app.tsx',
     devServer: {
       // static: {
       //   directory: path.join(__dirname, 'dist/renderer.js')
       // },
-      compress: true,
+      compress: false,
       port: 9000,
     },
     optimization: {
@@ -56,9 +58,9 @@ const devWebpack = {
 }
 
 const commonWebpack = {
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   resolve: {
-    extensions: ['.tsx', '.ts'],
+    extensions: ['.tsx', '.ts', '.js'],
   }
 };
 
