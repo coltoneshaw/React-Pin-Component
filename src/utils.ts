@@ -6,7 +6,7 @@
 export const fillValues = (length: number, initialValue: number | string) => Array(length)
   .fill('')
   .map((x, i) => ({
-    value: initialValue.toString()[i] || '',
+    value: initialValue.toString()[i] || x,
     name: `pin${i}`,
   }));
 
