@@ -1,10 +1,12 @@
 import React, {
-  useState, useEffect,
+  useState, useEffect, useMemo,
 } from 'react';
+import type { PinInputProps } from 'react-pin-component';
 import PinItem from './PinItems';
-import type { PinInputProps } from "react-pin-component" 
 
-import {fillValues, moveFocus, onBackspace} from './utils'
+import {
+  fillValues, moveFocus, onBackspace, addSplitElement,
+} from './utils';
 
 const PinInput = ({
   length = 6,
@@ -23,7 +25,7 @@ const PinInput = ({
   onChange,
   type = 'numeric',
   debug = false,
-  addSplit,
+  addSplit = undefined,
 }: PinInputProps) => {
   const [values, updateValues] = useState(() => fillValues(length, initialValue ?? ''));
 
@@ -48,13 +50,11 @@ const PinInput = ({
   };
 
   useEffect(() => {
-    // if focus is enabled this will move the focus to the very first input box. 
+    // if focus is enabled this will move the focus to the very first input box.
     if (focus && length) moveFocus(-1, false);
   }, [focus, length]);
 
-  
-
-  const valueArray = values.map((e, i) => (
+  const valueArray = useMemo(() => values.map((e, i) => (
     <PinItem
       pinValue={e}
       length={length}
@@ -75,20 +75,7 @@ const PinInput = ({
       placeholder={placeholder}
       debug={debug}
     />
-  ))
-
-  if(addSplit) {
-    const {component, every} = addSplit
-    const length = valueArray.length
-    let insertedAmount = 0;
-    for(let i = every; i < length; i += every) {
-      valueArray.splice(i + insertedAmount, 0, component)
-      insertedAmount++
-      
-    }
-    
-  }
-
+  )), [addSplit, values]);
 
   return (
     <div
@@ -97,11 +84,11 @@ const PinInput = ({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        ...style
+        ...style,
       }}
       className="react-pin-component"
     >
-      {valueArray }
+      {addSplitElement(addSplit, valueArray)}
     </div>
   );
 };

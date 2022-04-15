@@ -1,8 +1,8 @@
-import {
-  DetailedHTMLProps, InputHTMLAttributes, useState, useEffect, CSSProperties
+import React, {
+  DetailedHTMLProps, InputHTMLAttributes, useState, useEffect, CSSProperties,
 } from 'react';
 
-import type { PinItemProps } from "react-pin-component" 
+import type { PinItemProps } from 'react-pin-component';
 import { checkAndUpdate } from './utils';
 
 const defaultStyles = {
@@ -40,11 +40,11 @@ const PinItem = ({
   const [styles, setStyles] = useState<CSSProperties>(() => defaultStyles);
 
   useEffect(() => {
-    let newStyles = {...defaultStyles};
-    if(inputStyle) Object.assign(newStyles, inputStyle);
-    if(focus) Object.assign(newStyles, inputFocusStyle);
+    const newStyles = { ...defaultStyles };
+    if (inputStyle) Object.assign(newStyles, inputStyle);
+    if (focus) Object.assign(newStyles, inputFocusStyle);
     setStyles(newStyles);
-  }, [inputStyle, inputFocusStyle, focus])
+  }, [inputStyle, inputFocusStyle, focus]);
 
   useEffect(() => {
     if (pinValue.value === value) return;
