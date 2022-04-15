@@ -4159,7 +4159,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-pin-component@^0.1.8, react-pin-component@workspace:.":
+"react-pin-component@workspace:.":
   version: 0.0.0-use.local
   resolution: "react-pin-component@workspace:."
   dependencies:
@@ -4177,7 +4177,6 @@ __metadata:
     html-webpack-plugin: ^5.5.0
     react: ^18.0.0
     react-dom: ^18.0.0
-    react-pin-component: ^0.1.8
     ts-loader: ^9.2.8
     typescript: ^4.6.3
     vite-dts: ^1.0.4
