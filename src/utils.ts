@@ -52,8 +52,8 @@ export const checkValue = (
     return 'invalid';
   }
   if (regexCriteria) {
-    if (debug) console.debug('invalid on regex');
     if (regexCriteria.test(value)) return value;
+    if (debug) console.debug('invalid on regex');
     return 'invalid';
   }
   return value;

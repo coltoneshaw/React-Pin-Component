@@ -5,6 +5,8 @@ import React, {
 import type { PinItemProps } from 'react-pin-component';
 import { checkAndUpdate } from './utils';
 
+import RenderContent from './CustomComponent';
+
 const defaultStyles = {
   padding: 0,
   margin: '0 2px',
@@ -20,31 +22,17 @@ const PinItem = ({
   pinValue,
   onBackspace,
   onItemChange,
-  disabled,
-  placeholder,
-  ariaLabel,
-  secret,
-  type,
-  // inputMode,
   onPaste,
-  inputStyle,
-  inputFocusStyle,
+  inputOptions,
   index,
   regexCriteria,
-  debug,
+  InputComponent,
 }: PinItemProps) => {
+  const { debug, inputFocusStyle, removeDefaultInputStyles } = inputOptions;
   const [value, setValue] = useState('');
   const [focus, setFocus] = useState(false);
   const [updated, setUpdated] = useState(false);
   const [changeFunction] = useState(() => onItemChange);
-  const [styles, setStyles] = useState<CSSProperties>(() => defaultStyles);
-
-  useEffect(() => {
-    const newStyles = { ...defaultStyles };
-    if (inputStyle) Object.assign(newStyles, inputStyle);
-    if (focus) Object.assign(newStyles, inputFocusStyle);
-    setStyles(newStyles);
-  }, [inputStyle, inputFocusStyle, focus]);
 
   useEffect(() => {
     if (pinValue.value === value) return;
@@ -68,26 +56,23 @@ const PinItem = ({
   }, [value, updated, changeFunction]);
 
   return (
-    <input
-      disabled={disabled}
-      className="pincode-input-text"
+    <RenderContent
+      InputComponent={InputComponent}
       onKeyDown={onKeyDown}
-      placeholder={String(placeholder) ?? value}
-      aria-label={ariaLabel ?? value}
       maxLength={1}
-      autoComplete="off"
-      type={secret ? 'password' : type}
-      // inputMode={inputMode}
-      pattern={type === 'numeric' ? '[0-9]*' : '^[a-zA-Z0-9]+$'}
       onBlur={() => setFocus(false)}
-      onPaste={(e) => {
+      onPaste={(e: any) => {
         if (!onPaste) return;
         const pasteValue = e.clipboardData.getData('text');
         onPaste(pasteValue);
       }}
       onFocusCapture={() => setFocus(true)}
       name={`pin-${index}`}
-      style={styles}
+      style={{
+        ...(removeDefaultInputStyles ? {} : defaultStyles),
+        // render focus styles if in focus
+        ...(focus ? inputFocusStyle : {}),
+      }}
       value={value}
     />
   );

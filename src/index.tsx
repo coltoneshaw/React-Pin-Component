@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useMemo,
+  useState, useEffect,
 } from 'react';
 import type { PinInputProps } from 'react-pin-component';
 import PinItem from './PinItems';
@@ -13,19 +13,13 @@ const PinInput = ({
   style = {},
   initialValue = undefined,
   focus = true,
-  disabled = false,
-  secret = false,
-  // inputMode = undefined,
   validate,
-  inputStyle = {},
-  inputFocusStyle = {},
   regexCriteria = /^[a-zA-Z0-9]+$/,
-  ariaLabel = '',
-  placeholder = '',
+  InputComponent = undefined,
   onChange,
-  type = 'numeric',
-  debug = false,
+  inputOptions,
   addSplit = undefined,
+
 }: PinInputProps) => {
   const [values, updateValues] = useState(() => fillValues(length, initialValue ?? ''));
 
@@ -54,28 +48,25 @@ const PinInput = ({
     if (focus && length) moveFocus(-1, false);
   }, [focus, length]);
 
-  const valueArray = useMemo(() => values.map((e, i) => (
+  const valueArray = values.map((e, i) => (
     <PinItem
+      inputOptions={{
+        debug: inputOptions.debug ?? false,
+        removeDefaultInputStyles: inputOptions.removeDefaultInputStyles ?? false,
+        inputFocusStyle: inputOptions.inputFocusStyle ?? {},
+      }}
       pinValue={e}
       length={length}
       index={i}
       key={e.name}
-      disabled={disabled}
       onBackspace={onBackspace}
-      secret={secret || false}
       onItemChange={(value) => onItemChange(value, i)}
-      type={type}
-      // inputMode={inputMode}
       validate={validate}
-      inputStyle={inputStyle}
-      inputFocusStyle={inputFocusStyle}
       onPaste={onPaste}
       regexCriteria={regexCriteria}
-      ariaLabel={ariaLabel}
-      placeholder={placeholder}
-      debug={debug}
+      InputComponent={InputComponent}
     />
-  )), [addSplit, values]);
+  ));
 
   return (
     <div

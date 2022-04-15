@@ -1,25 +1,22 @@
 declare module 'react-pin-component' {
   import {
-    CSSProperties, AriaRole,
+    CSSProperties,
   } from 'react';
 
   export interface SharedProps {
     length: number
-    disabled?: boolean;
-    secret?: boolean;
-    type?: 'numeric' | 'custom';
-    // inputMode?: 'none' | 'search' | 'numeric' | 'text' | 'tel' | 'url' | 'email' | 'decimal' | undefined;
-
     // Validate should be a function taking the single digit pin value and returning true/false if it validates.
     validate?: (value: string) => boolean;
-    inputStyle?: CSSProperties;
-    inputFocusStyle?: CSSProperties;
     regexCriteria?: RegExp;
-    ariaLabel?: AriaRole;
-    placeholder?: string;
+    InputComponent?: React.ReactElement;
+    inputOptions: {
+      // only enable this in development. It will turn on console logging.
+      debug?: boolean;
+      removeDefaultInputStyles?: boolean;
+      inputFocusStyle?: CSSProperties;
 
-    // only enable this in development. It will turn on console logging.
-    debug?: boolean;
+    }
+
   }
 
   export interface PinInputProps extends SharedProps {
@@ -32,12 +29,16 @@ declare module 'react-pin-component' {
   }
 
   export interface PinItemProps extends SharedProps {
+
     onBackspace: (index: number) => void;
     onPaste: ((value: string) => void) | null;
     index: number;
     pinValue: { name: string, value: string }
     onItemChange: (value: string) => void
+  }
 
+  export interface PinInputComponent extends React.ComponentProps<'input'> {
+    InputComponent?: React.ReactElement
   }
 
   // eslint-disable-next-line react/prefer-stateless-function
